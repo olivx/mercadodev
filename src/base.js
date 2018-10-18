@@ -3,7 +3,7 @@ const config = {
     authDomain: "mercadodev-ba418.firebaseapp.com",
     databaseURL: "https://mercadodev-ba418.firebaseio.com",
     projectId: "mercadodev-ba418",
-    storageBucket: "mercadodev-ba418.appspot.com",
+    storageBucket: "gs://mercadodev-ba418.appspot.com",
     messagingSenderId: "596245059618"
   }
 
@@ -11,8 +11,10 @@ const config = {
   const Rebase =  require('re-base')
   const firebase = require('firebase/app')
   require('firebase/database')
+  require('firebase/storage')
 
   const app = firebase.initializeApp(config)
   const base = Rebase.createClass(app.database())
 
+  export const storage = app.storage()
   export default base

@@ -1,61 +1,34 @@
 import React, { Component } from 'react';
-import './App.css';
+import { BrowserRouter as Router, Route} from 'react-router-dom'
 
-import HeaderHome from './HeaderHome'
-import AnuncioHome from './AnuncioHome'
-import Footer from './Footer'
-import LinkCategoria from './LinkCategorias'
 import base from './base'
-
+import './App.css';
+import Home from './Home'
+import Footer from './Footer'
+import NovoAnuncio from './NovoAnuncio'
 
 
 class App extends Component {
-  constructor (props){
+  constructor(props){
     super(props)
     this.state = {
-      categorias:[],
-      anuncios:[]
+      categorias:[]
     }
+
     base.bindToState('categorias', {
       context: this,
       state: 'categorias'
     })
-
-    base.bindToState('anuncios', {
-      context: this,
-      state: 'anuncios',
-      queries:{
-        limitToLast:3
-      }
-    })
   }
   render() {
-    let index = 0
     return (
-      <div className="App">
-        <HeaderHome />
-        <div className="container">
-          <h3>Útimos Anuncios</h3>
-          <div className="row">
-            {this.state.anuncios.map((anuncio, indice)=>{
-              return <AnuncioHome  anuncio={anuncio} key={indice} />
-
-            })}
-          </div>
-          <h3> Categostias </h3>
-          <div className="row">
-              { this.state.categorias.map((cat, indice )=> {
-                return [
-                  <LinkCategoria categoria={cat} key={indice} />,
-                  ++index%4 === 0 && <div key={'c'+indice} className="w-100"></div>
-              ]
-              })}
-          </div>
-        </div>
-        <div>
+      <Router>
+        <div className="App">
+          <Route path='/' exact render={() => <Home categorias={this.state.categorias} />} />
+          <Route path='/novo-anuncio' exact render={() => <NovoAnuncio categorias={this.state.categorias} />} />
           <Footer />
         </div>
-      </div>
+      </Router>
     );
   }
 }
