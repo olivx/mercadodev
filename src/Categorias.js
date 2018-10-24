@@ -4,6 +4,7 @@ import { Link, Route, Router, Switch } from 'react-router-dom'
 
 import HeaderInterno from './HeaderInterno'
 import Categoria from './Categoria'
+import Anuncio from './Anuncio'
 
 const Categorias = (props) => {
 
@@ -30,7 +31,8 @@ const Categorias = (props) => {
                     </div>
 
                     <div className="col-lg-8">
-                        <Route path='/categorias/:urlCategoria' component={Categoria}/>
+                        <Route path='/categorias/:urlCategoria' exact component={Categoria}/>
+                        <Route path='/categorias/:urlCategoria/:idAnuncio' render={(props)=> <Anuncio  {...props} />}/>
                     </div>
 
                 </div>

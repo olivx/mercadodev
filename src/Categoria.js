@@ -9,15 +9,17 @@ class Categoria extends Component {
   constructor(props){
     super(props)
     this.state = {
-      anuncios : {}
+      anuncios : {},
+      isLoading: true
     }
     this.loadAnuncios =  this.loadAnuncios.bind(this)
     this.loadAnuncios(this.props.match.params.urlCategoria)
   }
   loadAnuncios(urlCategoria){
+    this.setState({anuncios : {}})
     const url = `https://mercadodev-ba418.firebaseio.com/anuncios.json?orderBy=%22categoria%22&equalTo=%22${urlCategoria}%22`
     axios.get(url).then(json => {
-      this.setState({ anuncios : json.data })
+      this.setState({ anuncios : json.data, isLoading: false})
       this.categoria = urlCategoria
     })
   }
@@ -28,17 +30,21 @@ class Categoria extends Component {
     }
   }
   render() {
+    const categoria = this.props.match.params.urlCategoria
     return(
       <div>
-        <h1>categoria:{JSON.stringify(this.props.match.params.urlCategoria)}</h1>
-        <p>
+        <h1>categoria: &nbsp; {categoria}</h1>
+          {this.state.isLoading && <div className="text-center">
+            <i  style={{ fontSize: '15em' }} className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+          </div>}
+        <div className="row">
           {Object.keys(this.state.anuncios).map(key =>{
               const anuncio = this.state.anuncios[key]
-              return <AnuncioHome key={key} anuncio={anuncio} />
+              return <AnuncioHome key={key} id={key} anuncio={anuncio} />
             })
           }
-
-        </p>
+        </div>
+        {Object.keys(this.state.anuncios).length === 0 && <p>Nenhum prodtudo cadastrado.</p>}
       </div>
     )
   }
